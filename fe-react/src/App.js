@@ -1,6 +1,7 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GroceryList from './grocery-list';
+import axios from 'axios';
 
 function App() {
   const [groceryList, setGroceryList] = useState([]);
@@ -14,6 +15,15 @@ function App() {
   const handleInputChange = (value) => {
     setNewItemInput(value);
   };
+
+  useEffect(() => {
+    async function getGroceryItems() {
+      const res = await axios.get('http://localhost:8005/groceries');
+      const groceryList = res.data.groceries;
+      setGroceryList(groceryList);
+    }
+    getGroceryItems();
+  }, []);
 
   return (
     <div className="App">
